@@ -43,7 +43,6 @@ public class Main {
         }while(count != 6); // Initializing count = 6 creates an infinite loop
                             // count is increased in count++ before the condition is evaluate
 
-
         //Challenge #2
         // Modify the while code below
         // Make it also record the total number of even numbers it has found
