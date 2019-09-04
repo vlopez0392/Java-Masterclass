@@ -6,7 +6,7 @@ public class Main {
         //Reverse
         System.out.println(NumberToWords.reverse(123)); //321
 
-        System.out.println(NumberToWords.reverse(102)); //102
+        System.out.println(NumberToWords.reverse(102)); //201
 
         System.out.println(NumberToWords.reverse(-321)); //-123
 
@@ -20,11 +20,10 @@ public class Main {
 
         //Number To words
 
-        NumberToWords.numberToWords(5200);
+        NumberToWords.numberToWords(5200); //Five Two Zero Zero
 
-        NumberToWords.numberToWords(100);
+        NumberToWords.numberToWords(100);  //One Zero Zero
 
-        NumberToWords.numberToWords(0);
-
+        NumberToWords.numberToWords(0);    //Zero
     }
 }
