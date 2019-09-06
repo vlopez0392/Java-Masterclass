@@ -1,7 +1,5 @@
 package com.company;
 
-import com.sun.source.tree.ReturnTree;
-
 public class Person {
 
     //Write a class with the name Person. The class needs three fields (instance variables) with the names firstName,
