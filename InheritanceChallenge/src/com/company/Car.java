@@ -49,25 +49,28 @@ public class Car extends Vehicle{
     @Override
     public double throttle(double currentSpeed, double newSpeed) {
         super.throttle(newSpeed, currentSpeed);
-        boolean isOn = isOn();
 
-        if(isOn){
+        if(isOn()){
             double change =  newSpeed - currentSpeed;
 
-            if(isAutomatic()){
-                changeGearsAutomatically(newSpeed, currentSpeed);
+            if(change!=0){
+                if(isAutomatic()){
+                    changeGearsAutomatically(newSpeed, currentSpeed);
+                }else{
+                    changeGearsManually(currentSpeed, newSpeed);
+                }
             }else{
-                changeGearsManually(currentSpeed, newSpeed);
+                printIncreaseDecreaseSpeed(change, currentSpeed, newSpeed);
             }
 
-            printIncreaseDecreaseSpeed(change, currentSpeed, newSpeed);
             return newSpeed;
+        }else{
+            System.out.println("Pressing the gas pedal to no avail, please turn on your car now");
+            return 0.0;
         }
-        System.out.println("Pressing the gas pedal to no avail, please turn on your car now");
-        return 0.0;
     }
 
-    private void changeGearsAutomatically(double newSpeed, double speed){
+    private void changeGearsAutomatically(double speed, double newSpeed){
         int currentGear = getCurrentGear(speed);
 
         System.out.println("Your car has automatic transmission and gears will change automatically");
@@ -83,88 +86,228 @@ public class Car extends Vehicle{
         }
     }
 
-    public void changeGearsManually(double speed, double newSpeed){
+    public void changeGearsManually(double speed,  double newSpeed){
 
-        if(isAutomatic()){
+        double change = newSpeed - speed;
+
+        if(!isAutomatic()){
             if(isOn()){
                 int currentGear = getCurrentGear(speed);
                 printGearAndSpeed(speed, currentGear);
 
+                if(change > 0) {
+                    accelerate(speed, newSpeed, currentGear);
+                }else{
+                    decelerate(speed, newSpeed, currentGear);
+                }
+
+                return;
+
             }else{
                 System.out.println("Car is off but you can use the shift stick and clutch to practice changing gears");
-
+                gearChanger(1, speed);
+                return;
             }
         }
         System.out.println("Your car is automatic, you cannot change gears manually");
     }
 
+    //User interface to change gears
+    private int gearChanger(int currentGear, double speed){
+        Scanner scanner = new Scanner(System.in);
+
+        boolean changeGears = true;
+        boolean practice = false;
+
+        while(changeGears){
+
+            if(speed ==0){
+                System.out.println("Practice mode: ");
+                practice = true;
+                printGearAndSpeed(speed, currentGear);
+            }else{
+                System.out.println("Please change gears as required: ");
+            }
+
+            //Engage the clutch
+            boolean first = true;
+
+            while(first){
+                System.out.println("Press 'e' to engage the clutch: ");
+                String engage = scanner.nextLine();
+                engage = engage.toLowerCase();
+
+                if(engage.equals("e")){
+                    toggleClutch(false);
+                    first = false;
+                }else{
+                    System.out.println("Invalid input, Please try again");
+                }
+            }
+
+            //Select the desired gear - In practice mode you can choose any
+            boolean second = true;
+
+            while(second){
+                System.out.println("Please change gear now: ");
+                boolean isInt = scanner.hasNextInt();
+
+                if(isInt){
+                    currentGear = scanner.nextInt();
+                    second = false;
+                }else{
+                    System.out.println("Invalid gear, please try again");
+                }
+
+                scanner.nextLine();
+            }
+
+            //Disengage the clutch
+            boolean third = true;
+
+            while(third){
+                System.out.println("Press 'd' to disengage the clutch: ");
+                String disengage = scanner.nextLine();
+                disengage = disengage.toLowerCase();
+
+                if(disengage.equals("d")){
+                    toggleClutch(true);
+                    third = false;
+                }else{
+                    System.out.println("Invalid input, Please try again");
+                }
+            }
+
+            if(practice){
+                System.out.println("Continue with practice? Y/N");
+                String choice = scanner.nextLine();
+
+                if(!choice.toLowerCase().equals("y")){
+                    System.out.println("Exiting practice mode...");
+                }else{
+                    continue;
+                }
+            }
+            changeGears = false;
+        }
+
+        return currentGear;
+    }
+
+    //Toggles the clutch
+    private boolean toggleClutch(boolean clutchIn){
+        if(clutchIn){
+            System.out.println("Clutch disengaged");
+            return false;
+        }else{
+            System.out.println("Clutch engaged");
+            return true;
+        }
+    }
+
+    //Accelerate
     private void accelerate(double speed, double newSpeed, int currentGear){  //Assume constant increase in speed
         while (speed <= newSpeed) {
             speed += 1.0;
 
             int newCurrentGear = getCurrentGear(speed);
-
             if (newCurrentGear > currentGear) {
-                System.out.println("Changed gear from: " + currentGear + " to: " + newCurrentGear);
-                currentGear = newCurrentGear;
+
+                if(isAutomatic()){ //Gear change done automatically
+                    System.out.println("Changed gear from: " + currentGear + " to: " + newCurrentGear);
+                    currentGear = newCurrentGear;
+
+                }else{ //Deploy GearChanger
+                    int requiredGear = -1;
+
+                    while(requiredGear != newCurrentGear){
+                        System.out.println("Manual gear change required now, please change gear to: "+ newCurrentGear);
+                        requiredGear = gearChanger(currentGear, speed);
+
+                        if(requiredGear == newCurrentGear){
+                            System.out.println("Changed gear from: " + currentGear + " to: " + newCurrentGear);
+                            currentGear = newCurrentGear;
+
+                        }else{
+                            if(requiredGear == currentGear){
+                                System.out.println("No action performed, already in gear: "+ currentGear+" . Try again.");
+                            }else{
+                                System.out.println("Cannot change to that gear now, please try again");
+                            }
+                        }
+                    }
+                }
 
             }else if(newCurrentGear == this.numberOfGears){
-                printGearAndSpeed(newSpeed, currentGear);
                 break;
             }
         }
+        printGearAndSpeed(newSpeed, currentGear);
     }
 
+    //Decelerate
     private void decelerate(double speed, double newSpeed, int currentGear){ //Assume constant decrease in speed
         while (speed >= newSpeed) {
             speed -= 1.0;
-
             int newCurrentGear = getCurrentGear(speed);
 
             if (newCurrentGear < currentGear) {
-                System.out.println("Changed gear from: " + currentGear + " to: " + newCurrentGear);
-                currentGear = newCurrentGear;
+                if(isAutomatic()){ //Gear change done automatically
+                    System.out.println("Changed gear from: " + currentGear + " to: " + newCurrentGear);
+                    currentGear = newCurrentGear;
 
-            }else if(newCurrentGear == 1){
+                }else{ //Deploy GearChanger
+                    int requiredGear = -1;
 
-                if(newSpeed == 0){
-                    currentGear = 0;
-                    newSpeed = 0;
+                    while(requiredGear != newCurrentGear){
+                        System.out.println("Manual gear change required now, please change gear to: "+ newCurrentGear);
+                        requiredGear = gearChanger(currentGear, speed);
+
+                        if(requiredGear == newCurrentGear){
+                            System.out.println("Changed gear from: " + currentGear + " to: " + newCurrentGear);
+                            currentGear = newCurrentGear;
+                        }else{
+                            if(requiredGear == currentGear){
+                                System.out.println("No action performed, already in gear: "+ currentGear+" . Try again.");
+                            }else{
+                                System.out.println("Cannot change to that gear now, please try again");
+                            }
+                        }
+                    }
                 }
 
+            }else if(newCurrentGear == 1){
+                if(newSpeed == 0){
+                    currentGear = 1;
+                    newSpeed = 0;
+                }
                 printGearAndSpeed(newSpeed, currentGear);
                 break;
             }
         }
     }
 
-    private boolean toggleClutch(boolean clutchIn){
-            if(clutchIn){
-                System.out.println("Clutch disengaged");
-                return false;
-            }else{
-                System.out.println("Clutch engaged");
-                return true;
-            }
-    }
-
-
+    //Get current Gear
     private int getCurrentGear(double speed) {
         if (speed <= 0) {
             return 0;
-        } else if (speed > 1 && speed <= 10) {
+        } else if (speed >= 1 && speed < 10) {
             return 1;
-        } else if (speed > 11 && speed <= 25) {
+        } else if (speed >= 10 && speed < 25) {
             return 2;
-        } else if (speed > 25 && speed <= 50) {
+        } else if (speed >= 25 && speed < 50) {
             return 3;
-        } else if (speed > 50 && speed <= 85) {
+        } else if (speed >= 50 && speed < 85) {
             return 4;
-        } else if (speed > 85) {
-            if (this.numberOfGears < 6) {
-                return 5;
+        } else if (speed >= 85 && speed < 100) {
+            return 5;
+        } else if (speed >= 100){
+            if(this.numberOfGears > 5){
+                return 6;
             }
+        return 5;
         }
+
         return -1;
     }
 
@@ -172,15 +315,17 @@ public class Car extends Vehicle{
         if(speed >0){
             System.out.println("You are now traveling at "+ speed + " in gear number: "+ currentGear);
         }else{
-            System.out.println("You have stopped your car and your current gear is neutral"  );
+            System.out.println("Car has stopped. Current gear: " + currentGear);
         }
     }
 
     private void printIncreaseDecreaseSpeed(double change, double currentSpeed, double newSpeed){
         if(change < 0){
             System.out.println("Decreased speed by: " + change + " From: " + currentSpeed + " to: "+ newSpeed);
+        }else if (change >0 ) {
+            System.out.println("Increased speed by: " + change + " From: " + currentSpeed + " to: " + newSpeed);
         }else{
-            System.out.println("Increased speed by: " + change + " From: " + currentSpeed + " to: "+ newSpeed);
+            System.out.println("No change in speed");
         }
     }
 }
