@@ -54,12 +54,13 @@ public class Lamp {
 
                 if(setChoice >= 1 && setChoice <=3){
                     System.out.println("Light Intensity set to: "+setChoice);
+                    scanner.close();
                     keepSetting = false;
                 }else{
                     System.out.println("No such intensity level, please try again");
                 }
-
             }
         }
+
     }
 }

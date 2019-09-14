@@ -188,6 +188,7 @@ public class Car extends Vehicle{
                     continue;
                 }
             }
+            scanner.close();
             changeGears = false;
         }
 
