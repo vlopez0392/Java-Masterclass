@@ -24,7 +24,7 @@ public class DeluxeHamburger extends Hamburger {
     public void showGrandTotal() {
         super.showGrandTotal();
         System.out.println("Deluxe Burger extras");
-        System.out.println("Chips and Drink price: " + + getChipsAndDrinkPrice());
+        System.out.println("Chips and Drink price $: " + + getChipsAndDrinkPrice());
         System.out.println("Grand Total $: " + calculateBurgerPrice());
         System.out.println("--------------------------------------------------------------------------------------------");
     }

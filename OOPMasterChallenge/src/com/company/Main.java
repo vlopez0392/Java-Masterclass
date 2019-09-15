@@ -1,5 +1,7 @@
 package com.company;
 
+import javax.crypto.spec.DESedeKeySpec;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -22,6 +24,7 @@ public class Main {
         System.out.println();
 
         DeluxeHamburger deluxe = new DeluxeHamburger("White bread", "Bacon and Beef", 175);
+        deluxe.addBaseItems(2,2,2,2); //This is not allowed and the user will be informed
         deluxe.showGrandTotal();
     }
 }
