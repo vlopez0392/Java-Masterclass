@@ -30,7 +30,7 @@ public class Main {
         System.out.println("Reversed array (even number of elements) : " + Arrays.toString(even));
     }
 
-    private static void reverse(int[] array){
+    private static void reverse(int[] array){ //Course implementation is very similar
         int max = array.length -1;
         int half = array.length/2;
 
