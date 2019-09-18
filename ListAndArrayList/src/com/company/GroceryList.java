@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class GroceryList {
     private ArrayList<String> groceryList = new ArrayList<>();   //We don't define the type as we do regularly.
-                                                                 // We define the type of data that will go into the
+                                                                 // We` define the type of data that will go into the
                                                                  //ArrayList using the diamond syntax <>
 
     //Notice that ArrayLists are declared using the new keyword and thus allow for the use of constructors.
@@ -40,7 +40,7 @@ public class GroceryList {
     public String findItem(String searchItem){
         boolean exists = groceryList.contains(searchItem); //Instead of querying the ArrayList element by element, we
                                                            //use the contains() method to see if the ArrayList contains
-                                                           //the element that is being searched.
+                                                           //the element that is being searched
 
         //Now we want to return the item we are searching for
         int position = groceryList.indexOf(searchItem);    //indexOf() returns the index of the item we are searching for
@@ -50,6 +50,4 @@ public class GroceryList {
         }
         return null;
     }
-
-    //Lets add some extra functionality such that the use does not have to pass an integer to modify and remove methods.
 }

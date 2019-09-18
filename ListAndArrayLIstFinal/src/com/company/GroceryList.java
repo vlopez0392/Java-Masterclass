@@ -46,7 +46,6 @@ public class GroceryList {
         groceryList.remove(position);
     }
 
-    //Modify to return an integer corresponding to the queried position:
     public boolean onFile(String searchItem) {
         int position = findItem(searchItem);
         if (position >= 0) {
@@ -55,6 +54,7 @@ public class GroceryList {
         return false;
     }
 
+    //Modify to return an integer corresponding to the queried position:
     private int findItem(String searchItem) {
         return groceryList.indexOf(searchItem);
     }
