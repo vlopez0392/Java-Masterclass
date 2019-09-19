@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class MobilePhone {
     // Create a program that implements a simple mobile phone with the following capabilities.
     // Able to store, modify, remove and query contact names.
-
     // Create a master class (MobilePhone) that holds the ArrayList of Contacts
     // The MobilePhone class has the functionality listed above.
     // Add a menu of options that are available.
@@ -18,12 +17,12 @@ public class MobilePhone {
 
     private ArrayList<Contact> contacts;
 
-    //Constructor
+    //Constructor-------------------------------------------------------------------------------------------------------
     public MobilePhone() {
         this.contacts = new ArrayList<Contact>();
     }
 
-    //Print list of contacts
+    //Print list of contacts--------------------------------------------------------------------------------------------
     public void printContacts(){
         if(!this.contacts.isEmpty()){
             for(int i = 0; i<this.contacts.size(); i++) {
@@ -36,7 +35,7 @@ public class MobilePhone {
 
     }
 
-    //Add contacts (Functional)
+    //Add contacts (Functional)-----------------------------------------------------------------------------------------
     public boolean addContact(String name, long phoneNumber) {
         Contact newContact = new Contact(name, phoneNumber);
         return addContact(newContact);
@@ -50,7 +49,7 @@ public class MobilePhone {
         return true;
     }
 
-    //Remove a contact (Functional)
+    //Remove a contact (Functional)-------------------------------------------------------------------------------------
     public boolean removeContact(String name){
         return removeContact(getContactByName(name));
     }
@@ -65,7 +64,7 @@ public class MobilePhone {
         return false;
     }
 
-    //Update a contact (Functional)
+    //Update a contact (Functional)-------------------------------------------------------------------------------------
     public boolean updateContact(String currentName, String newName, long newPhone){
         Contact currentContact = getContactByName(currentName);
         Contact newContact = new Contact(newName, newPhone);
@@ -81,8 +80,7 @@ public class MobilePhone {
         }
         return false;
     }
-
-    //Query or find a contact (Functional)
+    //Query or find a contact (Functional)------------------------------------------------------------------------------
     public boolean findContact(String name){
         name = name.toLowerCase();
 
@@ -98,7 +96,7 @@ public class MobilePhone {
         return findContact(contact.getContactName());
     }
 
-    public Contact searchContact(String contactName){ //This method returns the
+    public Contact searchContact(String contactName){ //This method returns the contact given an input name as a String
         if(findContact(contactName)){
             return getContactByName(contactName);
         }
@@ -106,7 +104,7 @@ public class MobilePhone {
         return null;
     }
 
-    //MobilePhone exclusive methods
+    //MobilePhone exclusive methods-------------------------------------------------------------------------------------
     //Get a contact by name
     private Contact getContactByName(String name){
         name = name.toLowerCase();

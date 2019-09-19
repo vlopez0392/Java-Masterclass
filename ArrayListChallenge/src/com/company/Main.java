@@ -85,12 +85,17 @@ public class Main {
             System.out.println("Contact found!");
             System.out.print("Enter new name: ");
             String newName = scanner.nextLine();
-            System.out.print("Enter new phone: ");
-            long newPhone = scanner.nextLong();
-            scanner.nextLine();
 
-            mobilePhone.updateContact(currentName, newName, newPhone);
-            System.out.println("Updated contact successfully! ");
+            if(mobilePhone.findContact(newName)){
+                System.out.println("That contact name is already in your contact list");
+            }else{
+                System.out.print("Enter new phone: ");
+                long newPhone = scanner.nextLong();
+                scanner.nextLine();
+
+                mobilePhone.updateContact(currentName, newName, newPhone);
+                System.out.println("Updated contact successfully! ");
+            }
 
         }else{
             System.out.println("No such contact in your current contacts list. Add contact? Y/N");
