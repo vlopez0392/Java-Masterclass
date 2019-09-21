@@ -1,6 +1,4 @@
 package com.company;
-
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class Branch {
@@ -15,56 +13,68 @@ public class Branch {
     // Think about where you are adding the code to perform certain actions
 
     //Fields
-    private String BranchName;
+    private String branchName;
     private ArrayList<Customer> branchCustomers;
 
     //Branch constructor
     public Branch(String branchName) {
-        BranchName = branchName;
+        this.branchName = branchName;
         this.branchCustomers = new ArrayList<Customer>();
     }
 
-    //Required functionality
-
-    //Add customer
-    private boolean addCustomer(Customer newCustomer){
-        return findCustomer(newCustomer);
+    //Getters
+    public String getBranchName() {
+        return branchName;
     }
 
+    //Required functionality
+    //Add customer
+
     //Add a customer - Available outside Branch
-    public void addCustomer(String customerName, double initialTransaction){
-        Customer newCustomer = new Customer(customerName, initialTransaction);
+    public boolean addCustomer(Customer newCustomer, double initialTransaction){
 
         if(!findCustomer(newCustomer)) {
+            boolean madeInitialTransaction = initialTransaction > 0;
 
-            boolean madeInitialTransaction = newCustomer.getCustomerTransactions().isEmpty();
             if (madeInitialTransaction) {
-                System.out.println("Successfully added customer: " + newCustomer.getCustomerName() +
-                        " with an initial transaction of $: " + newCustomer.getCustomerTransactions().get(0));
+                System.out.println("Successfully added customer with name: " + newCustomer.getCustomerName() +
+                        " with an initial transaction of $: " + initialTransaction + " to Branch: " + this.branchName);
             } else {
-                System.out.println("Successfully added customer: " + newCustomer.getCustomerName());
+                System.out.println("Successfully added customer: " + newCustomer.getCustomerName() + " to Branch: " + this.branchName);
             }
-
             this.branchCustomers.add(newCustomer);
+            newCustomer.getTransactionsPerBranch().add(this);
+            newCustomer.getCustomerTransactions().add(initialTransaction);
+            return  true;
+
         }else{
             System.out.println("Customer is already on file");
         }
+
+        return false;
     }
 
     //Perform a transaction:
     public boolean addTransaction(Customer customer, double transactionAmount){
+
         if(findCustomer(customer)){
-            System.out.println("Performing transaction at: " + this.BranchName);
+            System.out.println("Performing transaction at: " + this.branchName);
             System.out.println("Customer name: " + customer.getCustomerName());
 
-            if(transactionAmount > 0){
-                System.out.println("Deposited a total amount of : " + transactionAmount + " $");
-            }else{
-                System.out.println("Withdrew a total amount of: " + transactionAmount + " $");
+            if(transactionAmount != 0){
+                if(transactionAmount > 0){
+                    System.out.println("Deposited a total amount of : " + transactionAmount + " $");
+                }else{
+                    System.out.println("Withdrew a total amount of: " + (-1*transactionAmount) + " $");
+                }
+
+                customer.getTransactionsPerBranch().add(this);
+                customer.getCustomerTransactions().add(transactionAmount);
+                return true;
             }
 
-            customer.getCustomerTransactions().add(transactionAmount);
-            return true;
+            System.out.println("Invalid transaction amount");
+            return false;
         }
 
         System.out.println("Customer not on file in this branch!");
@@ -79,5 +89,41 @@ public class Branch {
             }
         }
         return false;
+    }
+
+    public boolean customerOnFile(Customer customer){
+        return findCustomer(customer);
+    }
+
+    //Print customer transaction for this branch
+    public void printCustomerTransactions(Customer customer){
+        System.out.println("Branch name: " + this.branchName);
+
+        if(findCustomer(customer)){
+            System.out.println("Customer name: " + customer.getCustomerName());
+            int foundBranch = 0;
+
+            for(int i = 0 ; i < customer.getCustomerTransactions().size(); i++){
+
+                if(customer.getTransactionsPerBranch().get(i).getBranchName().equals(this.branchName)){
+                    foundBranch++;
+                    double transaction = customer.getCustomerTransactions().get(i);
+                    System.out.println(foundBranch + ". " + withDrawalOrDeposit(transaction) +" | $ " + transaction);
+                }
+            }
+        }else{
+            System.out.println("Customer not on file");
+        }
+    }
+
+    private String withDrawalOrDeposit(double amount){
+        if(amount > 0){
+            return "Deposit     ";
+        }else if (amount < 0){
+            return "Withdrawal  ";
+        }
+        else{
+            return "Initial transaction";
+        }
     }
 }

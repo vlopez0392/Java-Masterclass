@@ -1,5 +1,4 @@
 package com.company;
-
 import java.util.ArrayList;
 
 public class Customer {
@@ -15,15 +14,14 @@ public class Customer {
     //Fields
     private String customerName;
     private ArrayList<Double> customerTransactions;
+    private ArrayList<Branch> transactionsPerBranch;
+    private double balance;
 
     //Constructor
-    public Customer(String customerName, double initialTransaction) {
+    public Customer(String customerName) {
         this.customerName = customerName;
         this.customerTransactions = new ArrayList<Double>();
-
-        if(initialTransaction > 0){
-            this.customerTransactions.add(initialTransaction);
-        }
+        this.transactionsPerBranch =new ArrayList<Branch>();
     }
 
     //Getters
@@ -33,5 +31,22 @@ public class Customer {
 
     public ArrayList<Double> getCustomerTransactions() {
         return customerTransactions;
+    }
+
+    public ArrayList<Branch> getTransactionsPerBranch() {
+        return transactionsPerBranch;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public double getOverallBalance(){
+        double sum = 0.0;
+
+        for(int i = 0; i < this.getCustomerTransactions().size() ; i++){
+            sum += this.customerTransactions.get(i);
+        }
+        return sum;
     }
 }
