@@ -85,7 +85,14 @@ public class Main {
 
         System.out.println();
 
-        West.printCustomerTransactions(lopez);
+        //Print customer transactions directly from a branch and from the main bank
+        North.printCustomerTransactions(lopez, true);
 
+        BoT.printCustomerTransactionsAtBranch(lopez, North);
+
+        //Print all the transactions from a given customer regardless of the branch
+        BoT.printTransactionsByCustomer(lopez);
+        BoT.printTransactionsByCustomer(mejia);
+        BoT.printTransactionsByCustomer(bebi);
     }
 }

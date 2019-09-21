@@ -38,15 +38,14 @@ public class Customer {
     }
 
     public double getBalance() {
-        return balance;
+        return getOverallBalance();
     }
 
     public double getOverallBalance(){
-        double sum = 0.0;
-
         for(int i = 0; i < this.getCustomerTransactions().size() ; i++){
-            sum += this.customerTransactions.get(i);
+            this.balance += this.customerTransactions.get(i);
         }
-        return sum;
+
+        return this.balance;
     }
 }

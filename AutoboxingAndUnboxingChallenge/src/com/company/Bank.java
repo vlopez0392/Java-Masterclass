@@ -77,5 +77,28 @@ public class Bank {
         }
     }
 
+    //Print customer transactions at a given branch:
+    public void printCustomerTransactionsAtBranch(Customer customer, Branch branch){
+        if(hasBranch(branch)){
+            if(branch.customerOnFile(customer)){
+                branch.printCustomerTransactions(customer, true);
+            }
+        }else{
+            System.out.println("Branch not found");
+        }
+    }
 
+    //Print all transactions from a given customer
+    public void printTransactionsByCustomer(Customer customer){
+        System.out.println("-----------" + this.bankName.toUpperCase() + "-----------");
+        System.out.println("OVERALL BANK ACTIVITY FOR CUSTOMER: " + customer.getCustomerName());
+
+        System.out.println("------------------------------------");
+        for(Branch branch: this.bankBranches){
+            branch.printCustomerTransactions(customer, false);
+        }
+        System.out.println("BALANCE: " + customer.getBalance());
+        System.out.println("------------------------------------");
+        System.out.println();
+    }
 }

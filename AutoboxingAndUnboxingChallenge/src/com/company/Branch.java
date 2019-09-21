@@ -63,9 +63,9 @@ public class Branch {
 
             if(transactionAmount != 0){
                 if(transactionAmount > 0){
-                    System.out.println("Deposited a total amount of : " + transactionAmount + " $");
+                    System.out.println("Deposited a total amount of : " + transactionAmount + " $ " + "\n");
                 }else{
-                    System.out.println("Withdrew a total amount of: " + (-1*transactionAmount) + " $");
+                    System.out.println("Withdrew a total amount of: " + (-1*transactionAmount) + " $" + " \n");
                 }
 
                 customer.getTransactionsPerBranch().add(this);
@@ -96,11 +96,15 @@ public class Branch {
     }
 
     //Print customer transaction for this branch
-    public void printCustomerTransactions(Customer customer){
-        System.out.println("Branch name: " + this.branchName);
+    public void printCustomerTransactions(Customer customer, boolean localFlag){
+
+            System.out.println("Branch name: " + this.branchName);
 
         if(findCustomer(customer)){
-            System.out.println("Customer name: " + customer.getCustomerName());
+
+            if(localFlag) {
+                System.out.println("Customer name: " + customer.getCustomerName());
+            }
             int foundBranch = 0;
 
             for(int i = 0 ; i < customer.getCustomerTransactions().size(); i++){
@@ -114,6 +118,8 @@ public class Branch {
         }else{
             System.out.println("Customer not on file");
         }
+
+        System.out.println();
     }
 
     private String withDrawalOrDeposit(double amount){
