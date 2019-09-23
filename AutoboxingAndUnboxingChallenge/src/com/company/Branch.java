@@ -27,30 +27,38 @@ public class Branch {
         return branchName;
     }
 
-    //Required functionality
+    public ArrayList<Customer> getBranchCustomers() {
+        return branchCustomers;
+    }
+
+
+//Required functionality
     //Add customer
 
     //Add a customer - Available outside Branch
     public boolean addCustomer(Customer newCustomer, double initialTransaction){
 
         if(!findCustomer(newCustomer)) {
-            boolean madeInitialTransaction = initialTransaction > 0;
+            boolean madeValidInitialTransaction = initialTransaction >= 0;
 
-            if (madeInitialTransaction) {
-                System.out.println("Successfully added customer with name: " + newCustomer.getCustomerName() +
-                        " with an initial transaction of $: " + initialTransaction + " to Branch: " + this.branchName);
+            if (madeValidInitialTransaction) {
+
+                if (initialTransaction > 0) {
+                    System.out.println("Successfully added customer with name: " + newCustomer.getCustomerName() +
+                            " with an initial transaction of $: " + initialTransaction + " to Branch: " + this.branchName);
+                } else {
+                    System.out.println("Successfully added customer: " + newCustomer.getCustomerName() + " to Branch: " + this.branchName);
+                }
+
+                this.branchCustomers.add(newCustomer);
+                newCustomer.getTransactionsPerBranch().add(this);
+                newCustomer.getCustomerTransactions().add(initialTransaction);
+                return true;
+
             } else {
-                System.out.println("Successfully added customer: " + newCustomer.getCustomerName() + " to Branch: " + this.branchName);
+                System.out.println("Customer is already on file");
             }
-            this.branchCustomers.add(newCustomer);
-            newCustomer.getTransactionsPerBranch().add(this);
-            newCustomer.getCustomerTransactions().add(initialTransaction);
-            return  true;
-
-        }else{
-            System.out.println("Customer is already on file");
         }
-
         return false;
     }
 
@@ -72,11 +80,9 @@ public class Branch {
                 customer.getCustomerTransactions().add(transactionAmount);
                 return true;
             }
-
             System.out.println("Invalid transaction amount");
             return false;
         }
-
         System.out.println("Customer not on file in this branch!");
         return false;
     }
@@ -91,24 +97,15 @@ public class Branch {
         return false;
     }
 
-    public boolean customerOnFile(Customer customer){
-        return findCustomer(customer);
-    }
-
     //Print customer transaction for this branch
     public void printCustomerTransactions(Customer customer, boolean localFlag){
-
-            System.out.println("Branch name: " + this.branchName);
-
         if(findCustomer(customer)){
-
             if(localFlag) {
                 System.out.println("Customer name: " + customer.getCustomerName());
             }
+
             int foundBranch = 0;
-
             for(int i = 0 ; i < customer.getCustomerTransactions().size(); i++){
-
                 if(customer.getTransactionsPerBranch().get(i).getBranchName().equals(this.branchName)){
                     foundBranch++;
                     double transaction = customer.getCustomerTransactions().get(i);

@@ -54,10 +54,7 @@ public class Bank {
     //Perform a transaction given a customer and a branch
     public boolean performTransactionFromBranch(Customer customer, double transaction, Branch branch){
         if(hasBranch(branch)){
-            if(branch.customerOnFile(customer)){
-                branch.addTransaction(customer, transaction);
-                return true;
-            }
+            return branch.addTransaction(customer, transaction);
         }else{
             System.out.println("Branch not found");
         }
@@ -68,33 +65,43 @@ public class Bank {
         return this.bankBranches.contains(branch);
     }
 
-    //Print list of branches
-    public void printBranches(){
+    //Print list of branches and optionally the customers transactions from all customers
+    public void printBranchesAndCustomers(boolean printTransactions){
         int count = 0;
         for(Branch branch: this.bankBranches){
             count++;
             System.out.println("Branch #" + count +" " + branch.getBranchName());
+
+            int customerCount = 0;
+            for(Customer customer : branch.getBranchCustomers()){
+                customerCount++;
+                System.out.println("Customer #" + customerCount +": " + customer.getCustomerName());
+                if(printTransactions){
+                branch.printCustomerTransactions(customer, false);
+                }
+            }
+
+            System.out.println();
         }
     }
 
     //Print customer transactions at a given branch:
     public void printCustomerTransactionsAtBranch(Customer customer, Branch branch){
         if(hasBranch(branch)){
-            if(branch.customerOnFile(customer)){
-                branch.printCustomerTransactions(customer, true);
-            }
+            branch.printCustomerTransactions(customer, true);
         }else{
             System.out.println("Branch not found");
         }
     }
 
-    //Print all transactions from a given customer
+    //Print all transactions from a given customer at all branches
     public void printTransactionsByCustomer(Customer customer){
         System.out.println("-----------" + this.bankName.toUpperCase() + "-----------");
         System.out.println("OVERALL BANK ACTIVITY FOR CUSTOMER: " + customer.getCustomerName());
 
         System.out.println("------------------------------------");
         for(Branch branch: this.bankBranches){
+            System.out.println("Branch Name: " + branch.getBranchName());
             branch.printCustomerTransactions(customer, false);
         }
         System.out.println("BALANCE: " + customer.getBalance());
