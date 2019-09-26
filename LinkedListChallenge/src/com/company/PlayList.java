@@ -21,11 +21,13 @@ public class PlayList {
     //Fields
     private String playListName;
     private ArrayList<Album> albums;
+    private ArrayList<Song> playlist;
 
     //Constructor
     public PlayList(String playListName) {
         this.playListName = playListName;
         this.albums = new ArrayList<>();
+        this.playlist = new ArrayList<>();
     }
 
     //Getters
@@ -37,12 +39,16 @@ public class PlayList {
         return albums;
     }
 
+    public ArrayList<Song> getPlaylist() {
+        return playlist;
+    }
+
     //Add Album
     public void addAlbum(Album album){
         if(findAlbum(album.getAlbumTitle())){
             System.out.println("That album is already part of your library");
         }else{
-            System.out.println("Adding album: " + album.getAlbumTitle());
+            System.out.println("Adding album: " + album.getAlbumTitle() + " to your library");
             this.albums.add(album);
         }
     }
@@ -61,12 +67,8 @@ public class PlayList {
         return false;
     }
 
-    private String toLowerCase(String string){
-        return string.toLowerCase();
-    }
-
     //Choose albums
-    public Album selectAlbum(){
+    public Album selectAlbum(boolean first){  //Select album to choose songs from!
         if(this.albums.isEmpty()){
             System.out.println("No albums to browse from!");
             return null;
@@ -77,8 +79,9 @@ public class PlayList {
         Scanner scanner = new Scanner(System.in);
         boolean goingForward = true;
 
+        printOptions();
         while(continueBrowsing){
-            printOptions();
+            System.out.println("Enter choice: ");
             boolean isAnInt = scanner.hasNextInt();
 
             if(isAnInt){
@@ -95,10 +98,10 @@ public class PlayList {
                         }
 
                         if(albumListIterator.hasNext()){
-                            System.out.println("Album #" + albumListIterator.nextIndex() + ": "
-                                    + albumListIterator.next().getAlbumTitle());
+                            System.out.println("Album #" + (albumListIterator.nextIndex()+1) + ": "
+                                    + albumListIterator.next().getAlbumTitle() + "\n");
                         }else{
-                            System.out.println("No more albums here, reached the end of your library");
+                            System.out.println("No more albums here, reached the end of your library \n");
                             goingForward = false;
                         }
                         break;
@@ -112,45 +115,190 @@ public class PlayList {
                         }
 
                         if(albumListIterator.hasPrevious()){
-                            System.out.println("Album #" + albumListIterator.previousIndex() + ": "
-                                    + albumListIterator.previous().getAlbumTitle());
+                            System.out.println("Album #" + (albumListIterator.previousIndex()+1) + ": "
+                                    + albumListIterator.previous().getAlbumTitle() + " \n");
                         }else{
-                            System.out.println("Reached the beginning of your album library!");
+                            System.out.println("Reached the beginning of your album library! \n");
                             goingForward = true;
                         }
                         break;
 
                     case 3:
-                        Album decision;
+                        Album decision ;
                         if(goingForward){
-                            decision = albumListIterator.previous();
+                            if(albumListIterator.hasPrevious()){
+                                decision = albumListIterator.previous();
+                            }else{
+                                decision = albumListIterator.next();
+                            }
                         }else{
-                            decision = albumListIterator.next();
+                            if(albumListIterator.hasNext()){
+                                decision = albumListIterator.next();
+                            }else{
+                                decision = albumListIterator.previous();
+                            }
                         }
-
-                        System.out.println("You have chosen : " + decision.getAlbumTitle() + " to build your playlist! ");
+                        System.out.println("You have chosen : " + decision.getAlbumTitle() + " to build your playlist! \n");
                         return decision;
 
                     case 4:
-                        System.out.println("You didn't choose your album! Please try again next time :) ");
-                        continueBrowsing = false;
+                        printOptions();
                         break;
+
+                    case 5:
+                        System.out.println("You didn't choose your album! Please try again next time :) \n");
+                        if(first){
+                            Album defaultAlbum = this.albums.get(0);
+                            System.out.println("Choosing first library in your library as default: " + defaultAlbum.getAlbumTitle());
+                            return defaultAlbum;
+                        }
+
+                        return null;
+
                     default:
-                        System.out.println("Unknown input ");
+                        System.out.println("Unknown input, please input a valid option ");
+                        printOptions();
                         break;
                 }
             }else{
                 System.out.println("Wrong input! Please try again! ");
+                scanner.nextLine();
+                printOptions();
             }
         }
+        scanner.close();
         return null;
     }
+
+    public boolean playerMode(ArrayList<Song> playListSongs){   //Player mode -> Tracker for songs
+        if(playListSongs.isEmpty()) {
+            System.out.println("No songs in this playlist!");
+            return false;
+        }
+            boolean continueBrowsing = true;
+            ListIterator<Song> songListIterator = playListSongs.listIterator();
+            
+            Scanner scanner = new Scanner(System.in);
+            boolean goingForward = true;
+
+            printPlayerOptions();
+            
+            while(continueBrowsing){
+                System.out.println("Enter choice: ");
+                boolean isAnInt = scanner.hasNextInt();
+
+                if(isAnInt){
+                    int option = scanner.nextInt();
+                    scanner.nextLine();
+
+                    switch(option){
+                        case 1:
+                            if(!goingForward){
+                                if(songListIterator.hasNext()){
+                                    songListIterator.next();
+                                }
+                                goingForward = true;
+                            }
+
+                            if(songListIterator.hasNext()){
+                                System.out.println("Now playing song #: " + (songListIterator.nextIndex()+1) + ": "
+                                        + songListIterator.next().getTitle() + "\n");
+                            }else{
+                                System.out.println("No more albums here, reached the end of your playlist \n");
+                                goingForward = false;
+                            }
+                            break;
+
+                        case 2:
+                            if(goingForward){
+                                if(songListIterator.hasPrevious()){
+                                    songListIterator.previous();
+                                }
+                                goingForward = false;
+                            }
+
+                            if(songListIterator.hasPrevious()){
+                                System.out.println("Now playing song #: " + (songListIterator.previousIndex()+1) + ": "
+                                        + songListIterator.previous().getTitle() + " \n");
+                            }else{
+                                System.out.println("Reached the beginning of your playlist! \n");
+                                goingForward = true;
+                            }
+                            break;
+
+                        case 3:
+                            Song decision ;
+                            if(goingForward){
+                                if(songListIterator.hasPrevious()){
+                                    decision = songListIterator.previous();
+                                }else{
+                                    decision = songListIterator.next();
+                                }
+                            }else{
+                                if(songListIterator.hasNext()){
+                                    decision = songListIterator.next();
+                                }else{
+                                    decision = songListIterator.previous();
+                                }
+                            }
+                            System.out.println("Now playing in replay: " + decision.getTitle() + "\n");
+                            break;
+
+                        case 4:
+                            printPlayerOptions();
+                            break;
+
+                        case 5:
+                            System.out.println("Exiting player, see you next time! :) \n");
+                            return true;
+
+                        default:
+                            System.out.println("Unknown input, please input a valid option ");
+                            printPlayerOptions();
+                            break;
+                    }
+                }else{
+                    System.out.println("Wrong input! Please try again! ");
+                    scanner.nextLine();
+                    printPlayerOptions();
+                }
+            }
+
+            return false;
+    }
+
+    //Print songs
+    public void displaySongs(ArrayList<Song> songs){
+        if(songs.isEmpty()){
+            System.out.println("No songs in your playlist!");
+        }else{
+            for(Song song: songs){
+                System.out.println("SONG NAME: " + song.getTitle() +
+                        " | " + "DURATION: " + song.getDuration());
+            }
+        }
+    }
+
+    private void printPlayerOptions(){
+        System.out.println("Press to: ");
+        System.out.println("1 - Play next song ");
+        System.out.println("2 - Play the previous song ");
+        System.out.println("3 - Repeat the song ");
+        System.out.println("4 - Print the options ");
+        System.out.println("5 - To go back to edit mode \n");
+    }
+
 
     private void printOptions(){
         System.out.println("Press to: ");
         System.out.println("1 - Go to the next album ");
         System.out.println("2 - Go to the previous album ");
         System.out.println("3 - Select the current album ");
-        System.out.println("4 - To quit \n");
+        System.out.println("4 - Print the options ");
+        System.out.println("5 - To quit \n");
+    }
+
+    private String toLowerCase(String string){
+        return string.toLowerCase();
     }
 }
