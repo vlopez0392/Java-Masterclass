@@ -1,9 +1,6 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.Scanner;
+import java.util.*;
 
 public class PlayList {
     // Songs from different albums can be added to the playlist and will appear in the list in the order
@@ -21,13 +18,13 @@ public class PlayList {
     //Fields
     private String playListName;
     private ArrayList<Album> albums;
-    private ArrayList<Song> playlist;
+    private LinkedList<Song> playlist;
 
     //Constructor
     public PlayList(String playListName) {
         this.playListName = playListName;
         this.albums = new ArrayList<>();
-        this.playlist = new ArrayList<>();
+        this.playlist = new LinkedList<>();
     }
 
     //Getters
@@ -39,7 +36,7 @@ public class PlayList {
         return albums;
     }
 
-    public ArrayList<Song> getPlaylist() {
+    public LinkedList<Song> getPlaylist() {
         return playlist;
     }
 
@@ -101,7 +98,7 @@ public class PlayList {
                             System.out.println("Album #" + (albumListIterator.nextIndex()+1) + ": "
                                     + albumListIterator.next().getAlbumTitle() + "\n");
                         }else{
-                            System.out.println("No more albums here, reached the end of your library \n");
+                            System.out.println("No more albums here, reached the end of your library. \n");
                             goingForward = false;
                         }
                         break;
@@ -118,7 +115,7 @@ public class PlayList {
                             System.out.println("Album #" + (albumListIterator.previousIndex()+1) + ": "
                                     + albumListIterator.previous().getAlbumTitle() + " \n");
                         }else{
-                            System.out.println("Reached the beginning of your album library! \n");
+                            System.out.println("Reached the beginning of your album library. \n");
                             goingForward = true;
                         }
                         break;
@@ -138,7 +135,7 @@ public class PlayList {
                                 decision = albumListIterator.previous();
                             }
                         }
-                        System.out.println("You have chosen : " + decision.getAlbumTitle() + " to build your playlist! \n");
+                        System.out.println("You have chosen : " + decision.getAlbumTitle() + " to build your playlist. \n");
                         return decision;
 
                     case 4:
@@ -156,7 +153,7 @@ public class PlayList {
                         return null;
 
                     default:
-                        System.out.println("Unknown input, please input a valid option ");
+                        System.out.println("Unknown input, please input a valid option. ");
                         printOptions();
                         break;
                 }
@@ -170,9 +167,10 @@ public class PlayList {
         return null;
     }
 
-    public boolean playerMode(ArrayList<Song> playListSongs){   //Player mode -> Tracker for songs
+    public boolean playerMode(LinkedList<Song> playListSongs){   //Player mode -> Tracker for songs
+
         if(playListSongs.isEmpty()) {
-            System.out.println("No songs in this playlist!");
+            System.out.println("No songs in this playlist.");
             return false;
         }
             boolean continueBrowsing = true;
@@ -204,7 +202,7 @@ public class PlayList {
                                 System.out.println("Now playing song #: " + (songListIterator.nextIndex()+1) + ": "
                                         + songListIterator.next().getTitle() + "\n");
                             }else{
-                                System.out.println("No more albums here, reached the end of your playlist \n");
+                                System.out.println("No more albums here, reached the end of your playlist. \n");
                                 goingForward = false;
                             }
                             break;
@@ -221,7 +219,7 @@ public class PlayList {
                                 System.out.println("Now playing song #: " + (songListIterator.previousIndex()+1) + ": "
                                         + songListIterator.previous().getTitle() + " \n");
                             }else{
-                                System.out.println("Reached the beginning of your playlist! \n");
+                                System.out.println("Reached the beginning of your playlist. \n");
                                 goingForward = true;
                             }
                             break;
@@ -234,12 +232,14 @@ public class PlayList {
                                 }else{
                                     decision = songListIterator.next();
                                 }
+                                goingForward = false;
                             }else{
                                 if(songListIterator.hasNext()){
                                     decision = songListIterator.next();
                                 }else{
                                     decision = songListIterator.previous();
                                 }
+                                goingForward = true;
                             }
                             System.out.println("Now playing in replay: " + decision.getTitle() + "\n");
                             break;
@@ -268,15 +268,42 @@ public class PlayList {
     }
 
     //Print songs
-    public void displaySongs(ArrayList<Song> songs){
+    public void displaySongs(LinkedList<Song> songs){
         if(songs.isEmpty()){
-            System.out.println("No songs in your playlist!");
+            System.out.println("No songs in your playlist.");
         }else{
             for(Song song: songs){
                 System.out.println("SONG NAME: " + song.getTitle() +
                         " | " + "DURATION: " + song.getDuration());
             }
         }
+    }
+
+    //Find Song
+    public boolean findSong(String songName, LinkedList<Song> playlist){
+        songName = songName.toLowerCase();
+
+        for(Song song: playlist){
+            if(songName.equals(song.getTitle().toLowerCase())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //Get Song
+    public int findSongByIndex(String songName, LinkedList<Song> playlist){
+        songName = songName.toLowerCase();
+        String currentSongTitle;
+
+        for(int i = 0 ; i<playlist.size(); i++){
+                currentSongTitle = playlist.get(i).getTitle();
+
+                if(toLowerCase(currentSongTitle).equals(toLowerCase(songName))){
+                    return i;
+                }
+            }
+        return -1;
     }
 
     private void printPlayerOptions(){
@@ -287,7 +314,6 @@ public class PlayList {
         System.out.println("4 - Print the options ");
         System.out.println("5 - To go back to edit mode \n");
     }
-
 
     private void printOptions(){
         System.out.println("Press to: ");

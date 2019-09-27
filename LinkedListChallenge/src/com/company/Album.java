@@ -36,6 +36,18 @@ public class Album {
         }
     }
 
+    //Display Songs
+    public void displaySongs(ArrayList<Song> songs){
+        if(songs.isEmpty()){
+            System.out.println("No songs in your playlist.");
+        }else{
+            for(Song song: songs){
+                System.out.println("SONG NAME: " + song.getTitle() +
+                        " | " + "DURATION: " + song.getDuration());
+            }
+        }
+    }
+
     //Find a song, if song has same name do NOT add to the album regardless of duration!
     private boolean findSong(String songName){
         Iterator<Song> songIterator = this.albumSongs.iterator();

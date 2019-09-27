@@ -1,13 +1,13 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args){
-
         Album Scarface = new Album("Scarface");
         Scarface.addSong("Que Le Paso", "2:45");
         Scarface.addSong("Planet Rock", "5:19");
@@ -40,7 +40,7 @@ public class Main {
         ListIterator<Song> songListIterator = currentSongs.listIterator();
 
         Song currentSong;
-        ArrayList<Song> myPlaylist = playList.getPlaylist();
+        LinkedList<Song> myPlaylist = playList.getPlaylist();
 
         boolean continueBuilding = true;
         boolean goingForward = true;
@@ -75,7 +75,7 @@ public class Main {
                         break;
                     case 2:
                         System.out.println("Printing songs in: " + currentAlbum.getAlbumTitle());
-                        playList.displaySongs(currentSongs);
+                        currentAlbum.displaySongs(currentSongs);
                         System.out.println();
                         printOptions();
                         break;
@@ -93,7 +93,7 @@ public class Main {
                             System.out.println("Current song: " + currentSong.getTitle() + " Duration: " + currentSong.getDuration());
 
                         } else {
-                            System.out.println("Reached the end of the list! ");
+                            System.out.println("Reached the end of the list. ");
                             goingForward = false;
                         }
                         break;
@@ -123,12 +123,14 @@ public class Main {
                             } else {
                                 currentSong = songListIterator.next();
                             }
+                            goingForward = false;
                         } else {
                             if (songListIterator.hasNext()) {
                                 currentSong = songListIterator.next();
                             } else {
                                 currentSong = songListIterator.previous();
                             }
+                            goingForward = true;
                         }
                         if (myPlaylist.contains(currentSong)) {
                             System.out.println("Song is already in playlist! ");
@@ -138,25 +140,45 @@ public class Main {
                         }
                         printOptions();
                         break;
+
                     case 6:
-                        System.out.println("Now printing the songs in your playlist!");
                         playList.displaySongs(myPlaylist);
+
+                        if(!myPlaylist.isEmpty()){
+                            System.out.println("Enter the name of the song you want to remove: ");
+                            String songName = scanner.nextLine();
+
+                            if(playList.findSong(songName, myPlaylist)){
+                                int remove = playList.findSongByIndex(songName, myPlaylist);
+
+                                System.out.println("Successfully removed " + myPlaylist.get(remove).getTitle() + " From your playlist! \n");
+                                myPlaylist.remove(remove);
+
+                            }else{
+                                System.out.println("The song: " + songName +" is not in your playlist. ");
+                            }
+                        }
                         break;
 
                     case 7:
-                        System.out.println("Entering player mode! ");
+                        System.out.println("Now printing the songs in your playlist:");
+                        playList.displaySongs(myPlaylist);
+                        break;
+
+                    case 8:
+                        System.out.println("Entering player mode... ");
                         if(playList.playerMode(myPlaylist)){
                             System.out.println("Back to edit mode... \n" );
                         }else{
-                            System.out.println("Please add some songs to your playlist! \n");
+                            System.out.println("Please add some songs to your playlist.\n");
                         }
                         printOptions();
                         break;
-                    case 8:
+                    case 9:
                         printOptions();
                         break;
-                    case 9:
-                        System.out.println("PlayList building done! ");
+                    case 10:
+                        System.out.println("PlayList building done... ");
                         continueBuilding = false;
                         break;
                     default:
@@ -164,7 +186,7 @@ public class Main {
                         break;
                 }
             } else {
-                System.out.println("Wrong input! Please try again! ");
+                System.out.println("Wrong input. Please try again! ");
             }
         }
         scanner.close();
@@ -177,9 +199,10 @@ public class Main {
         System.out.println("3 - Go to the next song");
         System.out.println("4 - Go to the previous song ");
         System.out.println("5 - Add the current song to the playlist");
-        System.out.println("6 - Print the current songs in your playlist");
-        System.out.println("7 - Enter Player mode");
-        System.out.println("8 - Print the options ");
-        System.out.println("9 - To quit \n");
+        System.out.println("6 - Remove the current song from the playlist");
+        System.out.println("7 - Print the current songs in your playlist");
+        System.out.println("8 - Enter Player mode");
+        System.out.println("9 - Print the options ");
+        System.out.println("10 - To quit \n");
     }
 }
