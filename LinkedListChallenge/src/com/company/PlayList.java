@@ -146,7 +146,7 @@ public class PlayList {
                         System.out.println("You didn't choose your album! Please try again next time :) \n");
                         if(first){
                             Album defaultAlbum = this.albums.get(0);
-                            System.out.println("Choosing first library in your library as default: " + defaultAlbum.getAlbumTitle());
+                            System.out.println("Choosing first album in your library as default: " + defaultAlbum.getAlbumTitle());
                             return defaultAlbum;
                         }
 
@@ -272,10 +272,12 @@ public class PlayList {
         if(songs.isEmpty()){
             System.out.println("No songs in your playlist.");
         }else{
+            System.out.println("=============================");
             for(Song song: songs){
                 System.out.println("SONG NAME: " + song.getTitle() +
                         " | " + "DURATION: " + song.getDuration());
             }
+            System.out.println("=============================");
         }
     }
 

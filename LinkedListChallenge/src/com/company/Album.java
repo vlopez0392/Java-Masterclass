@@ -42,8 +42,10 @@ public class Album {
             System.out.println("No songs in your playlist.");
         }else{
             for(Song song: songs){
+                System.out.println("=============================");
                 System.out.println("SONG NAME: " + song.getTitle() +
                         " | " + "DURATION: " + song.getDuration());
+                System.out.println("=============================");
             }
         }
     }
