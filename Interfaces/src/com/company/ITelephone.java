@@ -1,6 +1,6 @@
 package com.company;
 
-public interface ITelephone { //Convention -> First character of the interface name starts with uppercase I. -> Denotes an interface
+ public interface ITelephone { //Convention -> First character of the interface name starts with uppercase I. -> Denotes an interface
 
     //Methods to be implemented by the classes.  -> This is the "contract"
     void powerOn();

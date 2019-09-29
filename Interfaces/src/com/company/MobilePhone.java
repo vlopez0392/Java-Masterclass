@@ -11,7 +11,6 @@ public class MobilePhone implements ITelephone {
     }
 
     //Implement the interface methods
-
     @Override
     public void powerOn() {
         this.isOn = true;

@@ -11,8 +11,8 @@ public class Main {
     //Interfaces -> Provides a common behavior used by several classes that implement the interface.
 
     //
-    ITelephone vicksPhone; //Declaring an interface reference -> You cannot instantiate an Interface
-                           //Implementing classes can be instantiated with a variable currently pointing to the Interface.
+    ITelephone vicksPhone; //Declaring an interface reference -> You cannot instantiate an Interface.
+                           //Classes that implement the interface can be instantiated with a variable currently pointing to the Interface.
 
     //Polymorphism at its best!
     vicksPhone = new DeskPhone(123456);

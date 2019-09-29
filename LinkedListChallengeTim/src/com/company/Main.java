@@ -1,10 +1,9 @@
 package com.company;
 
 import java.util.*;
-
 public class Main {
 
-    private static ArrayList<Album> albums = new ArrayList<>();
+    private static List<Album> albums = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -33,7 +32,7 @@ public class Main {
         album.addSong("Night of the long knives" , 5.12);
         albums.add(album);
 
-        LinkedList<Song> playlist = new LinkedList<>();
+        List<Song> playlist = new LinkedList<>();
 
         albums.get(0).addToPlayList("You can't do it right", playlist);
         albums.get(0).addToPlayList("Holy man", playlist);
@@ -47,7 +46,7 @@ public class Main {
         play(playlist);
     }
 
-    private static void play(LinkedList<Song>playlist){
+    private static void play(List<Song>playlist){
         Scanner scanner = new Scanner(System.in);
         boolean quit = false;
         boolean forward = true;
@@ -152,7 +151,7 @@ public class Main {
                 );
     }
 
-    private static void printList(LinkedList<Song> playlist){
+    private static void printList(List<Song> playlist){
         Iterator<Song> iterator = playlist.iterator();
         System.out.println("=======================");
 

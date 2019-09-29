@@ -15,8 +15,8 @@ public class GearBox {
     }
 
     //Now, because we have changed the above method, we may or may not have affected other parts of the code.
-    //This could be a serious problem. -> Then, interfaces provide a "contract" that the methods defined in the interface
-    //WILL NOT change. -> Provides robustness to your code.
+    //This could be a serious problem. -> Then, interfaces provide a "contract" that specifies that the methods defined
+    // in the interface WILL NOT change. -> Provides robustness to your code.
 
 
 
