@@ -46,7 +46,6 @@ public class Player implements ISaveable{
     public ArrayList<String> readValues() {
         ArrayList<String> values = new ArrayList<>();
         ArrayList<String> fieldNames = getFieldNames();
-
         Scanner scanner = new Scanner(System.in);
 
         int repeatLoop = fieldNames.size();
@@ -59,7 +58,6 @@ public class Player implements ISaveable{
 
             counter++;
         }
-
         return values;
     }
 
@@ -77,8 +75,6 @@ public class Player implements ISaveable{
         }
     }
 
-    //Creates an ArrayList whose elements are the field names. This method will be used to read the specific
-    // values from the user
     @Override
     public ArrayList<String> getFieldNames(){
         ArrayList<String> fieldNames = new ArrayList<>();

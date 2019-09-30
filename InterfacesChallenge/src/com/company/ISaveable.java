@@ -18,7 +18,11 @@ public interface ISaveable {
 // requires, and returns an ArrayList.
 // There is a whole Java I/O section later in the course where you will get to use files, etc.
 
+    //Required Fields
     ArrayList<String> readValues();
-    ArrayList<String> getFieldNames();
     void populateFields(ArrayList<String> objectValues);
+
+    //Creates an ArrayList whose elements are the field names. This method will be used to read the specific
+    // values from the user
+    ArrayList<String> getFieldNames();
 }
