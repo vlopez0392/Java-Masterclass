@@ -9,18 +9,24 @@ public class Main {
     public static void main(String[] args) {
 
     //Example 2 - Local class
-        class clickListener implements Button.OnClickListener{
-            public clickListener(){
-                System.out.println("I've been attached");
-            }
+//        class clickListener implements Button.OnClickListener{
+//            public clickListener(){
+//                System.out.println("I've been attached");
+//            }
+//
+//            @Override
+//            public void onClick(String title) {
+//                System.out.println(title + " was clicked");
+//            }
+//        }
 
+    //Example 3 Anonymous class
+        btnPrint.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(String title) {
                 System.out.println(title + " was clicked");
             }
-        }
-
-        btnPrint.setOnClickListener(new clickListener());
+        });
         listen();
 
         //Example 1 - Inner Class

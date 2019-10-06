@@ -8,7 +8,7 @@ import java.util.ArrayList;
 //      - Instances of the inner class has access to all fields and methods of its outer class, even those marked as
 //      private.
 
-//      - It is recommended not to use the same field names in both the inner and outer classes -> Shadowing will occur.
+//      - It is recommended to use different field names for the inner and outer classes -> Shadowing will occur.
 //      Then, to refer to a field of the outer class we must use OuterClass.fieldName which is cumbersome.
 
 //      - Inner classes can only be created with an instance of its outer class.
