@@ -10,7 +10,7 @@ public class Main {
                                         // - Implementation is left to the classes that implement the interface.
 
         //Abstract classes -> Are classes that define methods but do not provide the details of the implementations
-                        // -> Implementation details are left to the classes the inherit from the abstract class. (Different from interfaces)
+                        // -> Implementation details are left to the classes that inherit from the abstract class. (Different from interfaces)
 
         //Test
         Dog dog = new Dog("Yorkie");

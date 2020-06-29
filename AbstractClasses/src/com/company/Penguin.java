@@ -6,7 +6,6 @@ public class Penguin extends Bird {
         super(name);
     }
 
-
     //We want to override the fly() method in Bird to implement an specific functionality.
     @Override
     public void fly() {
